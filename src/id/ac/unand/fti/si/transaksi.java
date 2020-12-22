@@ -591,7 +591,7 @@ public class transaksi extends JFrame {
         	Integer stk=Integer.parseInt(bb);
         	Integer jmlh=Integer.parseInt(aa);
         	
-        	if (jmlh<=stk&&jmlh!=0) {
+        	if (jmlh<=stk&&jmlh>=0) {
         		sql="INSERT INTO transaksi_detail (id, sku,noresi, jumlah, harga)" 
         			+ "value ('"+id_trans+"', '"+kb+"','"+trans+"', '"+j+"','"+h+"')";
         		sql2="INSERT INTO transaksi (noresi, tanggal, username)"
@@ -604,8 +604,8 @@ public class transaksi extends JFrame {
         		JOptionPane.showMessageDialog(null, "Transaksi Berhasil");
         		clear();
         	}
-        	else if (jmlh==0) {
-        		JOptionPane.showMessageDialog(null, "Jumlah tidak boleh 0");
+        	else if (jmlh<=0) {
+        		JOptionPane.showMessageDialog(null, "Jumlah tidak boleh 0 atau minus");
         	}
         	else {
             	JOptionPane.showMessageDialog(null, "Stok barang tidak mencukupi");
