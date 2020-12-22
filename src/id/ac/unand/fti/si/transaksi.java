@@ -593,7 +593,7 @@ public class transaksi extends JFrame {
         	
         	if (jmlh<=stk&&jmlh>0) {
         		sql="INSERT INTO transaksi_detail (id, sku,noresi, jumlah, harga)" 
-        			+ "value ('"+id_trans+"', '"+kb+"','"+trans+"', '"+j+"','"+h+"')";
+        			+ "value ('"+id_trans+"', '"+kb+"','"+trans+"', '"+j+"','"+t+"')";
         		sql2="INSERT INTO transaksi (noresi, tanggal, username)"
         				+"value ('"+trans+"', '"+tgl+"', '"+km+"')";
         		stm=connection.createStatement();
