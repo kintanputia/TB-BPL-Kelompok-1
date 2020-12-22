@@ -591,7 +591,7 @@ public class transaksi extends JFrame {
         	Integer stk=Integer.parseInt(bb);
         	Integer jmlh=Integer.parseInt(aa);
         	
-        	if (jmlh<=stk&&jmlh>=0) {
+        	if (jmlh<=stk&&jmlh>0) {
         		sql="INSERT INTO transaksi_detail (id, sku,noresi, jumlah, harga)" 
         			+ "value ('"+id_trans+"', '"+kb+"','"+trans+"', '"+j+"','"+h+"')";
         		sql2="INSERT INTO transaksi (noresi, tanggal, username)"
