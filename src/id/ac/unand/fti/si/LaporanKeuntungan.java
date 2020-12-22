@@ -21,8 +21,9 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Collections;
+import java.util.Comparator;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.print.*;
@@ -109,16 +110,19 @@ public class LaporanKeuntungan extends JFrame {
 		return average;
 	}
 	
-	public void getMaxMin() {
-		HashSet<Integer>hs = new HashSet<Integer>();
-		for (int i=0; i<table.getRowCount(); i++) {
-			hs.add(Integer.parseInt(table.getValueAt(i, 6).toString()));
+	public LinkedHashSet<Keuntungan> getMaxMin() {
+		LinkedHashSet<Keuntungan> listuntung = new LinkedHashSet <Keuntungan>();
+		Integer totalkeuntungan;
+		for (int i=0; i<table.getRowCount(); i++) {	
+			totalkeuntungan = Integer.parseInt(table.getValueAt(i,6).toString());
+			listuntung.add(new Keuntungan(totalkeuntungan));
 		}
-		Integer max=Collections.max(hs);
-		Integer min=Collections.min(hs);
-		
-		textField_maxKeuntungan.setText(Integer.toString(max));
-		textField_minKeuntungan.setText(Integer.toString(min));
+		Keuntungan keuntunganMax = Collections.max(listuntung, Comparator.comparing(Keuntungan::getTotalKeuntungan));
+		Keuntungan keuntunganMin = Collections.min(listuntung, Comparator.comparing(Keuntungan::getTotalKeuntungan));
+			
+		textField_maxKeuntungan.setText(Integer.toString(keuntunganMax.getTotalKeuntungan()));
+		textField_minKeuntungan.setText(Integer.toString(keuntunganMin.getTotalKeuntungan()));
+		return listuntung;
 	}
 	
 	public void initcomponents () {

@@ -14,9 +14,13 @@ import java.awt.SystemColor;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.LinkedHashSet;
 
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
@@ -86,7 +90,6 @@ public class LaporanPenjualan extends JFrame {
 		}
 	}
 	
-	
 	public float getSumTotalPenjualan() {
 		int sum=0;
 		for (int i=0; i< table.getRowCount(); i++) {
@@ -104,17 +107,21 @@ public class LaporanPenjualan extends JFrame {
 		return average;
 	}
 	
-	public void getMaxMin() {
-		ArrayList<Integer> list = new ArrayList <Integer>();
-		for (int i=0; i<table.getRowCount(); i++) {
-			list.add(Integer.parseInt(table.getValueAt(i, 6).toString()));
+	public LinkedHashSet<Penjualan> getMaxMin() {
+		LinkedHashSet<Penjualan> listjual = new LinkedHashSet <Penjualan>();
+		Integer totalpenjualan;
+		for (int i=0; i<table.getRowCount(); i++) {	
+			totalpenjualan = Integer.parseInt(table.getValueAt(i,6).toString());
+			listjual.add(new Penjualan(totalpenjualan));
 		}
-		Integer max=Collections.max(list);
-		Integer min=Collections.min(list);
-		
-		textField_maxPenjualan.setText(Integer.toString(max));
-		textField_minPenjualan.setText(Integer.toString(min));
+		Penjualan penjualanMax = Collections.max(listjual, Comparator.comparing(Penjualan::getTotalPenjualan));
+		Penjualan penjualanMin = Collections.min(listjual, Comparator.comparing(Penjualan::getTotalPenjualan));
+			
+		textField_maxPenjualan.setText(Integer.toString(penjualanMax.getTotalPenjualan()));
+		textField_minPenjualan.setText(Integer.toString(penjualanMin.getTotalPenjualan()));
+		return listjual;
 	}
+
 
 
 	/**
