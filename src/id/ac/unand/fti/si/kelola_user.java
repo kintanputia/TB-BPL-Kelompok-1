@@ -65,7 +65,7 @@ public class kelola_user extends JFrame {
 			pst.close();
 			rs.close();
 	   }catch(Exception ex){
-		   
+		   ex.printStackTrace();
 	 }
 	}
 	
@@ -92,7 +92,7 @@ public class kelola_user extends JFrame {
 	public kelola_user() {
 		setTitle("Kelola User");
 		
-		showTableData();	//memanggil method show table
+		
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 945, 575);
