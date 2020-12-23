@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import net.proteanit.sql.DbUtils;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
@@ -49,11 +50,20 @@ public class Databarang extends JFrame {
 	private PreparedStatement ps;
 	Connection connection = null;
 
+	ArrayList <Barang> listbarang ;
+	String header[] = new String[] {"Sku", "Nama", "Stok", "Harga Beli", "Harga Jual"};
+	DefaultTableModel dtm;
+	int row, col;
+	
 	
 	public Databarang() {
 		setTitle("Kelola Barang");
 		connection = sqlConnection.dbConnector();
-		initComponents();	
+		initComponents();
+		listbarang = new ArrayList<>();
+		dtm = new DefaultTableModel(header,0);
+		tabeldetail.setModel(dtm);
+		
 	}
 	
 	private void ShowData() {	
@@ -290,13 +300,21 @@ public class Databarang extends JFrame {
 		btnTambah = new JButton("Tambah");
 		btnTambah.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				sku=String.valueOf(Sku.getText());
-				nama=String.valueOf(Nama.getText());
-				stok=Integer.parseInt(Stok.getText());
-				hbeli=Integer.parseInt(Hargabeli.getText());
-				hjual=Integer.parseInt(Hargajual.getText());
+				String sku=String.valueOf(Sku.getText());
+				String nama=String.valueOf(Nama.getText());
+				Integer stok=Integer.parseInt(Stok.getText());
+				Integer hbeli=Integer.parseInt(Hargabeli.getText());
+				Integer hjual=Integer.parseInt(Hargajual.getText());
+				listbarang.add(new Barang(sku, nama, stok, hbeli, hjual));
+				dtm.setRowCount(0);
+				
+				for (int i = 0; i<listbarang.size(); i++) {
+					Object[] objs = {listbarang.get(i).sku, listbarang.get(i).nama, listbarang.get(i).stok, listbarang.get(i).hbeli, listbarang.get(i).hjual};
+					dtm.addRow(objs);
+				}
 				
 				try {
+					
 					sql="INSERT INTO barang (sku, nama, stok, harga_beli, harga_jual) values"
 						+"('"+sku+"', '"+nama+"', '"+stok+"', '"+hbeli+"', '"+hjual+"')";
 					st = connection.createStatement();
@@ -328,7 +346,7 @@ public class Databarang extends JFrame {
 					st = connection.createStatement();
 					st.execute(sql);
 					Clear();
-//					ShowData();
+					ShowData();
 					JOptionPane.showMessageDialog(null, "Data Berhasil Diupdate");
 				} catch (Exception eu) {
 					JOptionPane.showMessageDialog(null, "ERROR \n "+eu.getMessage());
@@ -364,13 +382,13 @@ public class Databarang extends JFrame {
 				}
 			}
 		});
-		Cari.setFont(new Font("Cambria", Font.PLAIN, 20));
+		Cari.setFont(new Font("Cambria", Font.PLAIN, 14));
 		Cari.setBounds(143, 224, 229, 30);
 		contentPane.add(Cari);
 		Cari.setColumns(10);
 		
 		Hapus = new JTextField();
-		Hapus.setFont(new Font("Cambria", Font.PLAIN, 20));
+		Hapus.setFont(new Font("Cambria", Font.PLAIN, 14));
 		Hapus.setBounds(34, 462, 143, 30);
 		contentPane.add(Hapus);
 		Hapus.setColumns(10);
